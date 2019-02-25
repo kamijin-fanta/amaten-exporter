@@ -26,7 +26,10 @@ func (AmatenCollector) Describe(chan<- *prometheus.Desc) {
 
 func (AmatenCollector) Collect(ch chan<- prometheus.Metric) {
 	for _, giftType := range []string{"amazon", "itunes", "google_play"} {
-		res, _ := GetPrise(giftType, 20)
+		res, err := GetPrise(giftType, 20)
+		if err != nil {
+			continue
+		}
 
 		allGiftCount := prometheus.NewGauge(prometheus.GaugeOpts{
 			Name: "custom_amaten_all_gift_count",
