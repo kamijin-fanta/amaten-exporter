@@ -1,7 +1,9 @@
-From golang:1.11 as builder
+From golang:1.12 as builder
 WORKDIR /go/src/app
-COPY . .
 
+COPY go.sum go.mod ./
+RUN go mod download
+COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GO111MODULE=on go build -a -installsuffix cgo -o app .
 
 
